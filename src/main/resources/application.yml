@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: payment-api
+
+  config:
+    import: "optional:aws-secretsmanager:payment-api/config"
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${COGNITO_ISSUER_URI:}
+
+app:
+  queue-name: payment-api-queue
+
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info
