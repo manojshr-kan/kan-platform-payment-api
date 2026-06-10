@@ -16,6 +16,9 @@ spring:
 
   cloud:
     aws:
+      # Explicit region for the early config-import phase (Parameter Store / Secrets).
+      region:
+        static: ap-south-1
       sqs:
         # The queue is provisioned by Terraform. Never let the app create it.
         queue-not-found-strategy: fail
