@@ -3,13 +3,22 @@ spring:
     name: payment-api
 
   config:
-    import: "optional:aws-secretsmanager:payment-api/config"
+    import:
+      - "optional:aws-secretsmanager:payment-api/config"
+      - "aws-parameterstore:/kan-cloud-platform/dev/"
 
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${COGNITO_ISSUER_URI:}
+          # Sourced from SSM param /kan-cloud-platform/dev/cognito.issuer-uri
+          issuer-uri: ${cognito.issuer-uri}
+
+  cloud:
+    aws:
+      sqs:
+        # The queue is provisioned by Terraform. Never let the app create it.
+        queue-not-found-strategy: fail
 
 app:
   queue-name: payment-api-queue
